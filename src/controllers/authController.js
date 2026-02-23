@@ -68,6 +68,8 @@ async function spotifyToken(req, res, next) {
     });
 
     const data = await response.json();
+    console.log("Spotify token exchange response:", JSON.stringify({ scope: data.scope, token_type: data.token_type, expires_in: data.expires_in }));
+
     if (!response.ok) {
       return res.status(400).json({ error: data.error_description || "Spotify token exchange failed" });
     }
@@ -82,6 +84,7 @@ async function spotifyToken(req, res, next) {
     res.json({
       access_token: data.access_token,
       expires_in: data.expires_in,
+      scope: data.scope,
     });
   } catch (err) {
     next(err);
